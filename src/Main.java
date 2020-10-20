@@ -15,8 +15,10 @@ import static java.lang.System.exit;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+        //Path to the input data
         String SRC_PATH = "D:\\Roli\\freebase-head-1000000\\freebase-head-1000000";
 
+        //Path to the output folder for the temporary RDF
         File dir = new File("D:\\RES2");
         PrintWriter pw = null;
         try {
@@ -29,15 +31,17 @@ public class Main {
             exit(0);
         }
 
+        //local spark configuration
         SparkConf conf = new SparkConf().setAppName("VINF").setMaster("local");
         JavaSparkContext sc = new JavaSparkContext(conf);
         JavaRDD<String> fb = sc.textFile(SRC_PATH);
 
-        //keep only the lines that have an attribute we are interested in
+        //keep only the lines that have an attribute we are interested in, get rid of junk from each line
         JavaRDD<String> filtered_fb = fb.filter(x -> x.contains("http://rdf.freebase.com/ns/book.book.genre") | x.contains("http://rdf.freebase.com/ns/common.topic.alias") |
                                                      x.contains("http://rdf.freebase.com/ns/book.book.characters") | x.contains("http://rdf.freebase.com/ns/type.object.type") |
                                                      x.contains("http://rdf.freebase.com/ns/type.object.name"))
                                         .map(s -> s.replaceAll("(<http:\\/\\/rdf\\.freebase\\.com\\/ns\\/)|(>)|(\\.$)",""));
+
         //filter out machine ids for books
         JavaRDD<String> ids = filtered_fb.filter(x -> x.contains("http://rdf.freebase.com/ns/type.object.type"))
                                          .filter(x -> x.contains("http://rdf.freebase.com/ns/book.book"))
@@ -45,15 +49,14 @@ public class Main {
 
 
 
-        List<String> BooksList  = new ArrayList<String>();
-
+        /*List<String> BooksList  = new ArrayList<String>();
         Gson g = new Gson();
         BooksList.add(g.toJson(new Book("The great Gatsby")));
         JavaRDD<String> books = sc.parallelize(BooksList);
-        books.saveAsTextFile("res");
 
-        filtered_fb.saveAsTextFile("D:\\RES2");
+        filtered_fb.saveAsTextFile("D:\\RES2");*/
 
+        //combine the saved RDD part files
         String[] partNames = dir.list();
         for (String fileName : partNames) {
             System.out.println("Reading from " + fileName);
