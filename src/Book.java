@@ -4,8 +4,7 @@ import java.util.List;
 
 public class Book implements Serializable
 {
-    public Book (String name){
-        this.name = name;
+    public Book (){
         this.alias = new ArrayList<>();
         this.characters = new ArrayList<>();
         this.genre = new ArrayList<>();
@@ -32,24 +31,24 @@ public class Book implements Serializable
         return alias;
     }
 
-    public void setAlias(List<String> alias) {
-        this.alias = alias;
+    public void setAlias(String alias) {
+        this.alias.add(alias);
     }
 
     public List<String> getCharacters() {
         return characters;
     }
 
-    public void setCharacters(List<String> characters) {
-        this.characters = characters;
+    public void setCharacters(String characters) {
+        this.characters.add(characters);
     }
 
     public List<String> getGenre() {
         return genre;
     }
 
-    public void setGenre(List<String> genre) {
-        this.genre = genre;
+    public void setGenre(String genre) {
+        this.genre.add(genre);
     }
 
     private String name;
@@ -57,7 +56,4 @@ public class Book implements Serializable
     private List<String> alias;
     private List<String> characters;
     private List<String> genre;
-
-
-
 }
