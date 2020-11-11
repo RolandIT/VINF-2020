@@ -1,15 +1,15 @@
 import java.io.Serializable;
 
 public class Object implements Serializable {
-    String object;
+    String Object;
     String relationship;
 
     public String getObject() {
-        return object;
+        return Object;
     }
 
     public void setObject(String object) {
-        this.object = object;
+        this.Object = object;
     }
 
     public String getRelationship() {
