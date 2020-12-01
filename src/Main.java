@@ -69,8 +69,6 @@ public class Main {
                 .appName("VINF")
                 .config("spark.executor.uri", args[2])
                 .getOrCreate();
-        /*SparkConf conf = new SparkConf().setAppName("VINF")
-                                        .set("spark.executor.uri", args[2]);*/
 
         SparkContext ss = spark.sparkContext();
         JavaSparkContext sc = JavaSparkContext.fromSparkContext(ss);
